@@ -22,7 +22,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "Account",
-    pattern: "{area:exists}/{controller=Account}/{action=Signup}");
+    pattern: "Account/{action=Index}/{id?}");
 
 
 app.MapControllerRoute(

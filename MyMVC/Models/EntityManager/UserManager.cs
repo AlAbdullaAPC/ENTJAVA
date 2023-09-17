@@ -45,16 +45,58 @@ namespace MyMVC.Models.EntityManager
             }
         }
 
-        public List<Users> GetAllUsers()
+        public void UpdateUserAccount(UserModel user)
         {
-            List<Users> users = new List<Users>();
-
             using (MyDBContext db = new MyDBContext())
             {
-                users = db.Users.ToList();
+                SystemUsers existingSysUser = db.SystemUsers.FirstOrDefault(u => u.LoginName == user.LoginName);
+                Users existingUser = db.Users.FirstOrDefault(u => u.UserID == existingSysUser.UserID);
+
+                if(existingSysUser != null && existingSysUser != null)
+                {
+                    existingSysUser.ModifiedBy = 1;
+                    existingSysUser.ModifiedDateTime = DateTime.Now;
+
+                    existingUser.FirstName = user.FirstName;
+                    existingUser.LastName = user.LastName;
+                    existingUser.Gender = user.Gender;
+
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        //public List<Users> GetAllUsers()
+        //{
+        //    List<Users> users = new List<Users>();
+
+        //    using (MyDBContext db = new MyDBContext())
+        //    {
+        //        users = db.Users.ToList();
+        //    }
+
+        //    return users;
+        //}
+
+        public UsersModel GetAllUsers()
+        {
+            UsersModel list = new UsersModel();
+
+            using(MyDBContext db = new MyDBContext())
+            {
+                var users = from u in db.Users join us in db.SystemUsers on u.UserID equals us.UserID select new { u, us };
+
+                list.Users = users.Select(records => new UserModel()
+                {
+                    LoginName = records.us.LoginName,
+                    FirstName = records.u.FirstName,
+                    LastName = records.u.LastName,
+                    Gender = records.u.Gender,
+                    CreatedBy = records.u.CreatedBy,
+                }).ToList();
             }
 
-            return users;
+            return list;
         }
 
         public bool IsLoginNameExist(string loginName)

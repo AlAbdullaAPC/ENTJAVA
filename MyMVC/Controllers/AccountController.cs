@@ -10,6 +10,14 @@ namespace MyMVC.Controllers
         {
             return View();
         }
+        public ActionResult Users()
+        {
+            UserManager um = new UserManager();
+            UsersModel user = um.GetAllUsers();
+
+            return View(user);
+        }
+
 
         [HttpPost]
         public ActionResult SignUp(UserModel user)
@@ -26,6 +34,18 @@ namespace MyMVC.Controllers
                     ModelState.AddModelError("", "Login Name already taken.");
             }
             return View();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] UserModel user)
+        {
+            UserManager um = new UserManager();
+            if(um.IsLoginNameExist(user.LoginName))
+            {
+                um.UpdateUserAccount(user);
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("LoginNameNotFound");
         }
 
         [HttpGet]

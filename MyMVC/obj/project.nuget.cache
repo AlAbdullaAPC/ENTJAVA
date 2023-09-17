@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "yYeIIAwiK3k3zuHZiFUuweEWDPokJUqESGKY9mB3Q+cIzWnWlMTsmbkV4fci9RHTlyoVNi9XRBesE97thk7UIQ==",
+  "dgSpecHash": "dcfY/2GQbMios/zUnIO73dPZ2jO1ePolSqRKyO9JxyW6zlOZHiNtQMN6WhscFgadkVlcPenWB4DCOB+9wstqXg==",
   "success": true,
   "projectFilePath": "E:\\Github Projects\\APC\\ENTJAVA\\MyMVC\\MyMVC.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Al-Ghani\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Al-Ghani\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
     "C:\\Users\\Al-Ghani\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Al-Ghani\\.nuget\\packages\\jquery\\3.7.1\\jquery.3.7.1.nupkg.sha512",
+    "C:\\Users\\Al-Ghani\\.nuget\\packages\\jquery.ui.combined\\1.13.2\\jquery.ui.combined.1.13.2.nupkg.sha512",
     "C:\\Users\\Al-Ghani\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Al-Ghani\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\Al-Ghani\\.nuget\\packages\\microsoft.data.sqlclient\\5.1.1\\microsoft.data.sqlclient.5.1.1.nupkg.sha512",
