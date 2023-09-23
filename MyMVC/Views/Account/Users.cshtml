@@ -118,7 +118,8 @@
                     window.location.reload();
                 },
                 error: function (error) {
-                    console.error("Error updating user: ", errror);
+                    console.error("Error updating user: ", error);
+                    alert("Error updating user: " + error);
                     window.location.reload();
                 }
             });
