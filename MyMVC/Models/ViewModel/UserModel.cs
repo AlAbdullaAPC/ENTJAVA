@@ -21,7 +21,9 @@ namespace MyMVC.Models.ViewModel
         public string Gender { get; set; }
         [Required(ErrorMessage = "*")]
         [Display(Name = "Created By")]
-        public int CreatedBy { get; set; } 
+        public int CreatedBy { get; set; }
+        [Required(AllowEmptyStrings = true)]
+        public string AccountImage { get; set; }
     }
 
     public class UsersModel

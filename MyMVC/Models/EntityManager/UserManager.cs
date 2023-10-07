@@ -37,7 +37,8 @@ namespace MyMVC.Models.EntityManager
                     CreatedBy = 1,
                     CreatedDateTime = DateTime.Now,
                     ModifiedBy = 1,
-                    ModifiedDateTime = DateTime.Now
+                    ModifiedDateTime = DateTime.Now,
+                    AccountImage = user.AccountImage
                 };
 
                 db.Users.Add(newUser);
@@ -93,6 +94,7 @@ namespace MyMVC.Models.EntityManager
                     LastName = records.u.LastName,
                     Gender = records.u.Gender,
                     CreatedBy = records.u.CreatedBy,
+                    AccountImage = records.u.AccountImage ?? string.Empty
                 }).ToList();
             }
 

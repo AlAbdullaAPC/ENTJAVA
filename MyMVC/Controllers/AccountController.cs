@@ -22,7 +22,9 @@ namespace MyMVC.Controllers
         [HttpPost]
         public ActionResult SignUp(UserModel user)
         {
-            if(ModelState.IsValid)
+            ModelState.Remove("AccountImage");
+
+            if (ModelState.IsValid)
             {
                 UserManager um = new UserManager();
                 if (!um.IsLoginNameExist(user.LoginName))
@@ -37,12 +39,12 @@ namespace MyMVC.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update([FromBody] UserModel user)
+        public async Task<ActionResult> Update([FromBody] UserModel userData)
         {
             UserManager um = new UserManager();
-            if(um.IsLoginNameExist(user.LoginName))
+            if(um.IsLoginNameExist(userData.LoginName))
             {
-                um.UpdateUserAccount(user);
+                um.UpdateUserAccount(userData);
                 return RedirectToAction("Index");
             }
             return RedirectToAction("LoginNameNotFound");
