@@ -7,19 +7,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h1>Users List</h1>
-<div>
+<div id="userListContainer">
     <span class="alert-success">@ViewBag.Message</span>
     <table class="table table-striped table-condensed table-hover">
-        <thread>
+        <thead>
             <tr>
                 <th>Account Image</th>
                 <th>Login ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Gender</th>
+                <th>Role</th>
                 <th>Action</th>
             </tr>
-        </thread>
+        </thead>
         <tbody>
             @foreach (var i in Model.Users)
             {
@@ -34,14 +35,27 @@
                     <td>@Html.DisplayFor(m => i.FirstName)</td>
                     <td>@Html.DisplayFor(m => i.LastName)</td>
                     <td>@Html.DisplayFor(m => i.Gender)</td>
+                    <td>@Html.DisplayFor(m => i.RoleID)</td>
                     <td><a href="#" class="lnkEdit" data-userid="@i.UserID" data-login="@i.LoginName" data-firstname="@i.FirstName" data-lastname="@i.LastName" data-gender="@i.Gender">Edit</a></td>
                 </tr>
             }
         </tbody>
     </table>
+    <button id="reloadTable" class="btn btn-primary">Reload List</button>
+    <div id="loadingSpinner" class="text-primary" style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 9999;">
+        <div class="spinner-icon" style="text-align: center; margin-top:20%;">
+            <div class="spinner-border text-primary"></div>
+        </div>
+    </div>
 </div>
-
-
 
 <!-- UPDATE MODAL -->
 <div class="modal fade edit-modal" tabindex="-1">
@@ -68,7 +82,18 @@
                     </div>
                     <div class="form-group">
                         <label for="editGender">Gender:</label>
-                        <input type="text" class="form-control" id="editGender"/>
+                        <select class="form-control" id="editGender">
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="O">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRole">Role:</label>
+                        <select class="form-control" id="editRole">
+                            <option value="1">Administrator</option>
+                            <option value="2">Member</option>
+                        </select>
                     </div>
                 </form>
             </div>
@@ -92,19 +117,22 @@
             var editFirstName = $("#editFirstName");
             var editLastName = $("#editLastName");
             var editGender = $("#editGender");
+            var editRole = $("#editRole");
 
-            $(".lnkEdit").click(function () {
+            $("#userListContainer").on("click", ".lnkEdit", function () {
                 var userId = $(this).data("userid");
                 var loginName = $(this).data("login");
                 var firstName = $(this).data("firstname");
                 var lastName = $(this).data("lastname");
                 var gender = $(this).data("gender");
+                var role = $(this).data("role");
 
                 editId.val(userId);
                 editLoginName.val(loginName);
                 editFirstName.val(firstName);
                 editLastName.val(lastName);
                 editGender.val(gender);
+                editRole.val(role);
 
                 editModal.modal("show");
             });
@@ -114,7 +142,8 @@
                     LoginName: editLoginName.val(),
                     FirstName: editFirstName.val(),
                     LastName: editLastName.val(),
-                    Gender: editGender.val()
+                    Gender: editGender.val(),
+                    RoleID: editRole.val()
                 };
 
                 $.ajax({
@@ -132,7 +161,6 @@
                         }
                         else {
                             console.error("Error updating user: ", error);
-                            alert("Error updating user: " + error);
                             window.location.reload();
                         }
                     }
@@ -143,19 +171,49 @@
             $(".close-modal").click(function () {
                 editModal.modal("hide");
             });
-        });
-
-        function reloadUserList() {
-            $.ajax({
-                type: "GET",
-                url: "/account/users",
-                success: function (response) {
-                    userListContainer.html(response);
-                },
-                error: function (error) {
-                    console.error("Error fetching user list: ", error);
-                }
+            $("#reloadTable").click(function () {
+                reloadUserList();
             });
-        }
+
+            var loadingSpinner = $("#loadingSpinner");
+
+            $("#reloadTable").click(function () {
+                showLoadingSpinner();
+                reloadUserList();
+            });
+
+            function showLoadingSpinner()
+            {
+                loadingSpinner.show();
+            }
+            function hideLoadingSpinner()
+            {
+                loadingSpinner.hide();
+            }
+
+            function reloadUserList() {
+                $.ajax({
+                    type: "GET",
+                    url: "/account/users",
+                    success: function (data) {
+                        var $response = $(data);
+                        var userListHtml = $response.find("#userListContainer tbody").html();
+
+                        $("#userListContainer tbody").html(userListHtml);
+                        hideLoadingSpinnerWithDelay(500);
+                    },
+                    error: function (error) {
+                        console.error("Error fetching user list: ", error);
+                        hideLoadingSpinnerWithDelay(500);
+                    }
+                });
+            }
+
+            function hideLoadingSpinnerWithDelay(delayMilliseconds) {
+                setTimeout(function () {
+                    loadingSpinner.hide();
+                }, delayMilliseconds)
+            }
+        });
     });
 </script>

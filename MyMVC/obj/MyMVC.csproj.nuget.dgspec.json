@@ -58,6 +58,10 @@
               "target": "Package",
               "version": "[7.0.4, )"
             },
+            "Microsoft.Owin.Security.Cookies": {
+              "target": "Package",
+              "version": "[4.2.2, )"
+            },
             "jQuery": {
               "target": "Package",
               "version": "[3.7.1, )"

@@ -73,3 +73,7 @@ E:\Github Projects\APC\ENTJAVA\MyMVC\bin\Debug\net7.0\runtimes\win\lib\net6.0\Sy
 E:\Github Projects\APC\ENTJAVA\MyMVC\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 E:\Github Projects\APC\ENTJAVA\MyMVC\obj\Debug\net7.0\MyMVC.csproj.AssemblyReference.cache
 E:\Github Projects\APC\ENTJAVA\MyMVC\obj\Debug\net7.0\MyMVC.csproj.CopyComplete
+E:\Github Projects\APC\ENTJAVA\MyMVC\bin\Debug\net7.0\Microsoft.Owin.dll
+E:\Github Projects\APC\ENTJAVA\MyMVC\bin\Debug\net7.0\Microsoft.Owin.Security.dll
+E:\Github Projects\APC\ENTJAVA\MyMVC\bin\Debug\net7.0\Microsoft.Owin.Security.Cookies.dll
+E:\Github Projects\APC\ENTJAVA\MyMVC\bin\Debug\net7.0\Owin.dll

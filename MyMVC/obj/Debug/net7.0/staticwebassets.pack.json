@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "E:\\Github Projects\\APC\\ENTJAVA\\MyMVC\\wwwroot\\img\\UserIcon@3x.png",
+      "PackagePath": "staticwebassets\\img\\UserIcon@3x.png"
+    },
+    {
       "Id": "E:\\Github Projects\\APC\\ENTJAVA\\MyMVC\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },

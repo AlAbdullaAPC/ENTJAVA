@@ -30,10 +30,11 @@ namespace MyMVC.Models.EntityManager
 
                 Users newUser = new Users
                 {
+                    ProfileID = 0,
                     UserID = newUserID,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Gender = "1",
+                    Gender = user.Gender,
                     CreatedBy = 1,
                     CreatedDateTime = DateTime.Now,
                     ModifiedBy = 1,
@@ -42,6 +43,22 @@ namespace MyMVC.Models.EntityManager
                 };
 
                 db.Users.Add(newUser);
+                db.SaveChanges();
+
+                int roleId = db.Role.First(r => r.RoleName == "Admin").RoleID;
+
+                UserRole userRole = new UserRole
+                {
+                    UserID = newUserID,
+                    LookUpRoleID = roleId,
+                    IsActive = true,
+                    CreatedBy = newUserID,
+                    CreatedDateTime = DateTime.Now,
+                    ModifiedBy = newUserID,
+                    ModifiedDateTime = DateTime.Now
+                };
+
+                db.UserRole.Add(userRole);
                 db.SaveChanges();
             }
         }
@@ -61,6 +78,14 @@ namespace MyMVC.Models.EntityManager
                     existingUser.FirstName = user.FirstName;
                     existingUser.LastName = user.LastName;
                     existingUser.Gender = user.Gender;
+                    existingUser.AccountImage = user.AccountImage;
+
+                    UserRole userRole = db.UserRole.FirstOrDefault(ur => ur.UserID == existingUser.UserID);
+
+                    if (userRole != null)
+                    {
+                        userRole.LookUpRoleID = user.RoleID;
+                    }
 
                     db.SaveChanges();
                 }
@@ -85,7 +110,14 @@ namespace MyMVC.Models.EntityManager
 
             using(MyDBContext db = new MyDBContext())
             {
-                var users = from u in db.Users join us in db.SystemUsers on u.UserID equals us.UserID select new { u, us };
+                var users = from u in db.Users 
+                            join us in db.SystemUsers 
+                                on u.UserID equals us.UserID 
+                            join ur in db.UserRole
+                                on u.UserID equals ur.UserID
+                            join r in db.Role
+                                on ur.LookUpRoleID equals r.RoleID
+                            select new { u, us, r, ur };
 
                 list.Users = users.Select(records => new UserModel()
                 {
@@ -94,11 +126,42 @@ namespace MyMVC.Models.EntityManager
                     LastName = records.u.LastName,
                     Gender = records.u.Gender,
                     CreatedBy = records.u.CreatedBy,
-                    AccountImage = records.u.AccountImage ?? string.Empty
+                    AccountImage = records.u.AccountImage ?? string.Empty,
+                    RoleID = records.ur.LookUpRoleID,
+                    RoleName = records.r.RoleName
                 }).ToList();
             }
 
             return list;
+        }
+        public UserModel GetUser(string loginName)
+        {
+            using(MyDBContext db = new MyDBContext())
+            {
+                var users = from u in db.Users
+                            join us in db.SystemUsers
+                                on u.UserID equals us.UserID
+                            join ur in db.UserRole
+                                on u.UserID equals ur.UserID
+                            join r in db.Role
+                                on ur.LookUpRoleID equals r.RoleID
+                            where us.LoginName == loginName
+                            select new { u, us, r, ur };
+
+                UserModel userModel = users.Select(r => new UserModel()
+                {
+                    LoginName = r.us.LoginName,
+                    FirstName = r.u.FirstName,
+                    LastName = r.u.LastName,
+                    Gender = r.u.Gender,
+                    CreatedBy = r.u.CreatedBy,
+                    AccountImage = r.u.AccountImage ?? string.Empty,
+                    RoleID = r.ur.LookUpRoleID,
+                    RoleName = r.r.RoleName
+                }).FirstOrDefault();
+
+                return userModel;
+            }
         }
 
         public bool IsLoginNameExist(string loginName)
@@ -107,6 +170,38 @@ namespace MyMVC.Models.EntityManager
             {
                 return db.SystemUsers.Where(u => u.LoginName.Equals(loginName)).Any();
             }
+        }
+
+        public string GetUserPassword(string loginName)
+        {
+            using (MyDBContext db = new MyDBContext())
+            {
+                var user = db.SystemUsers.Where(o => o.LoginName.ToLower().Equals(loginName.ToLower()));
+
+                if (user.Any())
+                    return user.FirstOrDefault().PasswordEncryptedText;
+                else
+                    return string.Empty;
+            }
+        }
+
+        public bool IsUserInRole(string loginName, string roleName)
+        {
+            using (MyDBContext db = new MyDBContext())
+            {
+                SystemUsers su = db.SystemUsers.Where(o => o.LoginName.ToLower().Equals(loginName))?.FirstOrDefault();
+
+                if(su != null)
+                {
+                    var roles = from ur in db.UserRole
+                                join r in db.Role on ur.LookUpRoleID equals r.RoleID
+                                where r.RoleName.Equals(roleName) && ur.UserID.Equals(su.UserID) select r.RoleName;
+
+                    if (roles != null)
+                        return roles.Any();
+                }
+            }
+            return false;
         }
 
         public string GetMd5Hash(string text)

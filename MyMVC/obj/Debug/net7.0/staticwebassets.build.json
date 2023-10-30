@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "LTgPIjFkedDXzfj1ctWNSiF3D5H9SQoyJ9dtxDIOG68=",
+  "Hash": "zNmxUM9AgftreCbwlfzKNyVbqKt63ukZnZjDs9irfp4=",
   "Source": "MyMVC",
   "BasePath": "_content/MyMVC",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "E:\\Github Projects\\APC\\ENTJAVA\\MyMVC\\wwwroot\\img\\UserIcon@3x.png",
+      "SourceId": "MyMVC",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Github Projects\\APC\\ENTJAVA\\MyMVC\\wwwroot\\",
+      "BasePath": "_content/MyMVC",
+      "RelativePath": "img/UserIcon@3x.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\UserIcon@3x.png"
     },
     {
       "Identity": "E:\\Github Projects\\APC\\ENTJAVA\\MyMVC\\wwwroot\\js\\site.js",
